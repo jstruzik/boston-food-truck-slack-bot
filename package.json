@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "node-schedule": "^1.1.0"
+    "node-schedule": "^1.1.0",
+    "request": "^2.72.0"
   },
   "devDependencies": {},
   "scripts": {
