@@ -77,8 +77,6 @@ function parseType(type) {
 function sendSlackReponse(found_trucks) {
 	var slack_message = buildSlackMessage(found_trucks);
 
-	console.log(slack_message);
-
 	request.post({url: slack_url, body: slack_message}, function (error, response, body) {
 		console.log(body);
 	});
@@ -104,7 +102,6 @@ function buildSlackMessage(found_trucks) {
 
 	return JSON.stringify(json_obj);
 }
-
 
 schedule.scheduleJob('00 17 * * 1-5', function(){
 	sendFoodTruckList();
