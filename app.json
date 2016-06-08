@@ -1,0 +1,5 @@
+{
+  "name": "Boston Food Truck Slack Bot",
+  "description": "A utility to notify Slack users of daily Boston food trucks.",
+  "keywords": ["slack", "food truck", "boston"]
+}
