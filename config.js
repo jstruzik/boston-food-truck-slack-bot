@@ -36,4 +36,7 @@ config.locations =  [
 // The incoming Slack webhook URL.
 config.slack_url = process.env.SLACK_URL || 'https://slack_webhook_url_goes_here';
 
+config.slack_bot_name = 'FoodTruckBot';
+config.slack_bot_emoji = ':truck:';
+
 module.exports = config;

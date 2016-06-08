@@ -40,8 +40,6 @@ function sendFoodTruckList() {
 						}
 					}
 				}
-
-
 				sendSlackReponse(found_trucks);
 			});
 		}
@@ -101,8 +99,8 @@ function buildSlackMessage(found_trucks) {
 	}
 
 	var json_obj = {
-		username: 'FoodTruckBot',
-		icon_emoji: ':truck:',
+		username: config.slack_bot_name,
+		icon_emoji: config.slack_bot_emoji,
 		text: text
 	}
 
