@@ -71,9 +71,42 @@ function parseYelpRating(rating) {
 	return rating_str;
 }
 
-// Parses the food truck type and returns a message based on it.
+// Parses the food truck type and returns an emoji message based on it.
 function parseType(type) {
-	return type;
+	switch(type) {
+		case 'Mexican':
+			return ':taco:'
+			break;
+		case 'Asian':
+			return ':ramen:'
+			break;
+		case 'Healthy':
+			return ':apple:'
+			break;
+		case 'American':
+			return ':us:'
+			break;
+		case 'International':
+			return ':earth_americas:'
+			break;
+		case 'Sandwiches':
+			return ':bread:'
+			break;
+		case 'Burgers':
+			return ':hamburger:'
+			break;
+		case 'Desserts':
+			return ':cake:'
+			break;
+		case 'Pizza':
+			return ':pizza:'
+			break;
+		case 'Drinks':
+			return ':tropical_drink:'
+			break;
+		default:
+			return '';
+	}
 }
 
 // Sends the Slack message via an incoming webhook.
@@ -94,7 +127,7 @@ function buildSlackMessage(found_trucks) {
 		trucks_arr = found_trucks[location];
 		for (var i = 0; i < trucks_arr.length; i++) {
 			truck = trucks_arr[i];
-			text = text + '> *' + truck.truck_name + ':* ' + truck.name_url + ' ' + truck.yelp_rating_emoji + '\n'
+			text = text + '> ' + truck.type_emoji + ' *' + truck.truck_name + ':* ' + truck.name_url + ' ' + truck.yelp_rating_emoji + '\n'
 		}
 	}
 
