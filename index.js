@@ -49,7 +49,7 @@ function sendFoodTruckList() {
 // Maps the truck information with the found location trucks.
 function mapTruck(truck_info, found_truck) {
 	for (var i = 0; i < truck_info.length; i++) {
-		if (truck_info[i].route_name === found_truck.truck_route) {
+		if (truck_info[i].route_name.toUpperCase() === found_truck.truck_route.toUpperCase()) {
 			found_truck.name_url = 'https://twitter.com/' + truck_info[i].twitter;
 			found_truck.yelp_rating_emoji = parseYelpRating(truck_info[i].yelp_rating);
 			found_truck.type_emoji = parseType(truck_info[i].type_name);
@@ -95,7 +95,7 @@ function parseType(type) {
 		case 'Burgers':
 			return ':hamburger:'
 			break;
-		case 'Desserts':
+		case 'Dessert':
 			return ':cake:'
 			break;
 		case 'Pizza':
@@ -140,7 +140,7 @@ function buildSlackMessage(found_trucks) {
 	return JSON.stringify(json_obj);
 }
 
-// Schedule a job every Mon-Fri at 17:00 UTC (12:00PM EST).
-schedule.scheduleJob('00 17 * * 1-5', function(){
+// Schedule a job every Mon-Fri at 16:00 UTC.
+schedule.scheduleJob('00 16 * * 1-5', function(){
 	sendFoodTruckList();
 });
