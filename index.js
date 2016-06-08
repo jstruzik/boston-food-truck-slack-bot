@@ -1,11 +1,12 @@
 schedule = require('node-schedule');
 request = require('request');
+config = require('./config');
 
+// BostonFeed URLs
 location_url = 'http://bostonfeed.me/backend/getLocation.php';
 truck_url = 'http://bostonfeed.me/backend/getTruck.php';
-slack_url = process.env.SLACK_URL;
-valid_locations = ['dewey', 'greenway-dewey-congress'];
 
+// Sets up and sends the populated food truck list to Slack.
 function sendFoodTruckList() {
 	request(truck_url, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
@@ -25,8 +26,8 @@ function sendFoodTruckList() {
 						days = truck.day.split(',');
 
 						if (days.indexOf(current_day.toString()) > -1) {
-							for (var j = 0; j < valid_locations.length; j++) {
-								if (truck.location_id === valid_locations[j]) {
+							for (var j = 0; j < config.locations.length; j++) {
+								if (truck.location_id === config.locations[j]) {
 									truck = mapTruck(truck_info, truck);
 
 									if (!(truck.location in found_trucks)) {
@@ -47,6 +48,7 @@ function sendFoodTruckList() {
 	});
 }
 
+// Maps the truck information with the found location trucks.
 function mapTruck(truck_info, found_truck) {
 	for (var i = 0; i < truck_info.length; i++) {
 		if (truck_info[i].route_name === found_truck.truck_route) {
@@ -59,6 +61,7 @@ function mapTruck(truck_info, found_truck) {
 	return found_truck;
 }
 
+// Parses the Yelp rating into :star: emojis.
 function parseYelpRating(rating) {
 	var rating_int = parseInt(rating);
 	var rating_str = ':star:';
@@ -70,18 +73,21 @@ function parseYelpRating(rating) {
 	return rating_str;
 }
 
+// Parses the food truck type and returns a message based on it.
 function parseType(type) {
 	return type;
 }
 
+// Sends the Slack message via an incoming webhook.
 function sendSlackReponse(found_trucks) {
 	var slack_message = buildSlackMessage(found_trucks);
 
-	request.post({url: slack_url, body: slack_message}, function (error, response, body) {
+	request.post({url: config.slack_url, body: slack_message}, function (error, response, body) {
 		console.log(body);
 	});
 }
 
+// Builds the Slack message to send.
 function buildSlackMessage(found_trucks) {
 	var text = '';
 
@@ -103,6 +109,7 @@ function buildSlackMessage(found_trucks) {
 	return JSON.stringify(json_obj);
 }
 
+// Schedule a job every Mon-Fri at 17:00 UTC (12:00PM EST).
 schedule.scheduleJob('00 17 * * 1-5', function(){
 	sendFoodTruckList();
 });
